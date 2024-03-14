@@ -19,7 +19,6 @@ const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function Navbar() {
   const token = localStorage.getItem("token");
-  console.log(token);
   const navigate = useNavigate();
 
   function Logout() {

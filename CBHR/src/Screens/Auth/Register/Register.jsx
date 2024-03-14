@@ -5,11 +5,9 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import logo from "../../../assests/logo.jpg";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link, useNavigate } from "react-router-dom";
-import { Card, Grid, useMediaQuery } from "@mui/material";
+import { Autocomplete, Card, Grid, useMediaQuery } from "@mui/material";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -25,14 +23,22 @@ export default function SignIn() {
       .email("Invalid email address")
       .required("Email is required"),
     userName: yup.string().required("UserName is required"),
-    password: yup.string().min(6).required("Payment purpose is required"),
+    gender: yup.string().min(1).required("gender is required"),
+    address: yup.string().min(3).required("address is required"),
+    courseName: yup.string().min(1).required("Course is required"),
+    age: yup.number().min(1).required("Age is required"),
+    password: yup.string().min(6).required("Password is required"),
   });
   const formik = useFormik({
     initialValues: {
       userName: "",
       password: "",
       email: "",
-      type: "",
+
+      age: "",
+      address: "",
+      courseName: "",
+      gender: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (v) => {
@@ -46,33 +52,48 @@ export default function SignIn() {
             type: "student",
           })
           .then(async (resr) => {
-            // console.log(resr);
-
             await axios
-              .put("https://cbhr.vercel.app/users/login", {
-                email: v.email,
-                password: v.password,
+              .post("https://cbhr.vercel.app/students/add", {
+                name: v.userName,
+                address: v.address,
+                gender: v.gender,
+                age: +v.age,
+                courseName: v.courseName,
               })
-              .then(async (resl) => {
-                const token = await resl.data?.token;
-                const type = await resl.data?.user?.type;
-                localStorage.setItem("token", token);
-                localStorage.setItem("type", type);
-                setloader(false);
+              .then(async (ress) => {
+                await axios
+                  .put("https://cbhr.vercel.app/users/login", {
+                    email: v.email,
+                    password: v.password,
+                  })
+                  .then(async (resl) => {
+                    const token = await resl.data?.token;
+                    const type = await resl.data?.user?.type;
+                    localStorage.setItem("token", token);
+                    localStorage.setItem("type", type);
+                    setloader(false);
 
-                await Swal.fire({
-                  position: "top-end",
-                  icon: "success",
-                  title: resr.data?.message,
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
+                    await Swal.fire({
+                      position: "top-end",
+                      icon: "success",
+                      title: resr.data?.message,
+                      showConfirmButton: false,
+                      timer: 1500,
+                    });
 
-                if (resl.data?.user?.type == "student") {
-                  navigate("/");
-                } else if (resl.data?.user?.type == "admin") {
-                  navigate("/admin");
-                }
+                    if (resl.data?.user?.type == "student") {
+                      navigate("/");
+                    } else if (resl.data?.user?.type == "admin") {
+                      navigate("/admin");
+                    }
+                  })
+                  .catch(async (e) => {
+                    setloader(false);
+                    await Swal.fire({
+                      icon: "error",
+                      text: e.response?.data?.message,
+                    });
+                  });
               })
               .catch(async (e) => {
                 setloader(false);
@@ -99,12 +120,11 @@ export default function SignIn() {
       }
     },
   });
-const size = useMediaQuery('(max-width:600px)')
-console.log(size);
+  const size = useMediaQuery("(max-width:600px)");
   return (
     <Box>
       <Container component="main" sx={{ maxWidth: "600px" }} maxWidth={false}>
-        <Card sx={{ p: 4, mt: 8 }}>
+        <Card sx={{ p: 4, my: 2 }}>
           <CssBaseline />
           <Box
             sx={{
@@ -132,7 +152,7 @@ console.log(size);
               sx={{ mt: 4 }}
             >
               <Grid container spacing={2}>
-                <Grid item xs={size?12:6}>
+                <Grid item xs={size ? 12 : 6}>
                   <TextField
                     required
                     fullWidth
@@ -149,8 +169,21 @@ console.log(size);
                     }
                   />
                 </Grid>
+                <Grid item xs={size ? 12 : 6}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="age"
+                    label="Age"
+                    type="number"
+                    id="age"
+                    onChange={formik.handleChange}
+                    error={formik.touched.age && Boolean(formik.errors.age)}
+                    helperText={formik.touched.age && formik.errors.age}
+                  />
+                </Grid>
 
-                <Grid item xs={size?12:6}>
+                <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
@@ -163,6 +196,7 @@ console.log(size);
                     helperText={formik.touched.email && formik.errors.email}
                   />
                 </Grid>
+
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -179,6 +213,74 @@ console.log(size);
                     helperText={
                       formik.touched.password && formik.errors.password
                     }
+                  />
+                </Grid>
+                <Grid item xs={size ? 12 : 6}>
+                  <Autocomplete
+                    disablePortal
+                    name="gender"
+                    label="Gender"
+                    type="text"
+                    id="gender"
+                    options={["Male", "Female", "Other"]}
+                    onChange={(e, v) => {
+                      formik.values.gender = v;
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        fullWidth
+                        error={
+                          formik.touched.gender && Boolean(formik.errors.gender)
+                        }
+                        helperText={
+                          formik.touched.gender && formik.errors.gender
+                        }
+                        {...params}
+                        label="Gender"
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={size ? 12 : 6}>
+                  <Autocomplete
+                    disablePortal
+                    name="courseName"
+                    label="Course"
+                    type="text"
+                    id="courseName"
+                    options={["wep", "tech"]}
+                    onChange={(e, v) => {
+                      formik.values.courseName = v;
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        fullWidth
+                        error={
+                          formik.touched.courseName &&
+                          Boolean(formik.errors.courseName)
+                        }
+                        helperText={
+                          formik.touched.courseName && formik.errors.courseName
+                        }
+                        {...params}
+                        label="Course"
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="address"
+                    label="Address  "
+                    type="text"
+                    id="address"
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.address && Boolean(formik.errors.address)
+                    }
+                    helperText={formik.touched.address && formik.errors.address}
                   />
                 </Grid>
               </Grid>
