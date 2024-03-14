@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,9 +14,11 @@ import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Swal from "sweetalert2";
+import Loader from "../../../Components/Loader";
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const [loader, setloader] = useState(false);
   const validationSchema = yup.object({
     email: yup
       .string()
@@ -30,11 +32,67 @@ export default function SignIn() {
       userName: "",
       password: "",
       email: "",
-      type: "customer",
+      type: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
-      console.log(values);
+    onSubmit: async (v) => {
+      try {
+        setloader(true);
+        await axios
+          .post("https://cbhr.vercel.app/users/register", {
+            userName: v.userName,
+            email: v.email,
+            password: v.password,
+            type: "student",
+          })
+          .then(async (resr) => {
+            // console.log(resr);
+
+            await axios
+              .put("https://cbhr.vercel.app/users/login", {
+                email: v.email,
+                password: v.password,
+              })
+              .then(async (resl) => {
+                setloader(false);
+                // console.log(resl);
+                await Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: resr.data?.message,
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+
+                if (resl.data?.user?.type == "student") {
+                  navigate("/");
+                } else if (resl.data?.user?.type == "admin") {
+                  navigate("/admin");
+                }
+              })
+              .catch(async (e) => {
+                setloader(false);
+                await Swal.fire({
+                  icon: "error",
+                  text: e.response?.data?.message,
+                });
+              });
+          })
+          .catch(async (e) => {
+            setloader(false);
+
+            await Swal.fire({
+              icon: "error",
+              text: e.response?.data?.message,
+            });
+          });
+      } catch (e) {
+        setloader(false);
+        await Swal.fire({
+          icon: "error",
+          text: e.response?.data?.message,
+        });
+      }
     },
   });
 
@@ -122,7 +180,7 @@ export default function SignIn() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign Up
+                Sign Up {loader ? <Loader color={"white"} size={20} /> : null}
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,8 +14,10 @@ import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Swal from "sweetalert2";
+import Loader from "../../../Components/Loader";
 
 export default function SignIn() {
+  const [loader, setloader] = useState(false);
   const navigate = useNavigate();
   const validationSchema = yup.object({
     email: yup.string().email().required("email is required"),
@@ -27,8 +29,45 @@ export default function SignIn() {
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
-      console.log(values);
+    onSubmit: async (v) => {
+      try {
+        setloader(true);
+        await axios
+          .put("https://cbhr.vercel.app/users/login", {
+            email: v.email,
+            password: v.password,
+          })
+          .then(async (res) => {
+            setloader(false);
+            const token = await res.data?.token;
+            localStorage.setItem("token", token);
+            await Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: res.data?.message,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+
+            if (res.data?.user?.type == "student") {
+              navigate("/");
+            } else if (res.data?.user?.type == "admin") {
+              navigate("/admin");
+            }
+          })
+          .catch(async (e) => {
+            setloader(false);
+            await Swal.fire({
+              icon: "error",
+              text: e.response?.data?.message,
+            });
+          });
+      } catch (e) {
+        await Swal.fire({
+          icon: "error",
+          text: e.response?.data?.message,
+        });
+      }
     },
   });
 
@@ -95,13 +134,13 @@ export default function SignIn() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Sign In {loader ? <Loader color={"white"} size={20} /> : null}
               </Button>
               <Box
                 sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}
               >
                 <Box></Box>
-                <Box item>
+                <Box>
                   <Link
                     to="/register"
                     variant="body2"
