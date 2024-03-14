@@ -20,9 +20,10 @@ const usersSchema = new mongoose.Schema({
     minLength: 6,
   },
   type: {
-    String,
-    required: true,
+    type: String,
+    required: true
   },
+
   tokens: {
     default: [],
     type: [],
