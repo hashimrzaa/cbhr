@@ -13,7 +13,8 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import Swal from "sweetalert2";
 import Loader from "../../../Components/Loader";
-
+// import {ref} from 'firebase/storage'
+// import { storage } from "../../../Config/FirebaseStorage/firbaseStorage";
 export default function SignIn() {
   const navigate = useNavigate();
   const [loader, setloader] = useState(false);
@@ -121,6 +122,36 @@ export default function SignIn() {
     },
   });
   const size = useMediaQuery("(max-width:600px)");
+
+  // upload image in firebase
+  // let [imgurl, setimgurl] = useState();
+
+  // let file = [];
+
+  // async function addFile() {
+  //   const files = file[0][0];
+
+  //   const storageRef = ref(storage, 'email');
+  //   await uploadBytes(storageRef, files)
+  //     .then(async () => {
+  //       await getDownloadURL(storageRef)
+  //         .then((url) => {
+  //           setimgurl(url);
+  //         })
+  //         .catch(async (err) => {
+  //           await Swal.fire({
+  //             icon: "error",
+  //             text: err.message,
+  //           });
+  //         });
+  //     })
+  //     .catch(async (err) => {
+  //       await Swal.fire({
+  //         icon: "error",
+  //         text: err.message,
+  //       });
+  //     });
+  // }
   return (
     <Box>
       <Container component="main" sx={{ maxWidth: "600px" }} maxWidth={false}>

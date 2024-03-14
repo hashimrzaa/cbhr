@@ -31,7 +31,6 @@ function Navbar() {
     })
       .then((res) => res.json())
       .then(async (res) => {
-        console.log(res);
         await Swal.fire({
           position: "top-end",
           icon: "success",
@@ -43,8 +42,6 @@ function Navbar() {
         navigate("/login");
       })
       .catch(async (e) => {
-        console.log(e);
-        console.error("Error:", error);
         await Swal.fire({
           icon: "error",
           text: e.message,
