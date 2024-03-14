@@ -5,8 +5,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import logo from "../../../assests/logo.jpg";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link, useNavigate } from "react-router-dom";
 import { Card } from "@mui/material";
@@ -87,7 +85,10 @@ export default function SignIn() {
           >
             <Avatar
               src={logo}
-              sx={{ m: 1, bgcolor: "#1976D2", width: "120px", border: "0" }}
+              sx={{
+                m: 1,
+                width: "120px",
+              }}
             />
 
             <Box

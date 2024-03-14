@@ -9,7 +9,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link, useNavigate } from "react-router-dom";
-import { Card, Grid } from "@mui/material";
+import { Card, Grid, useMediaQuery } from "@mui/material";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -99,7 +99,8 @@ export default function SignIn() {
       }
     },
   });
-
+const size = useMediaQuery('(max-width:600px)')
+console.log(size);
   return (
     <Box>
       <Container component="main" sx={{ maxWidth: "600px" }} maxWidth={false}>
@@ -114,7 +115,10 @@ export default function SignIn() {
           >
             <Avatar
               src={logo}
-              sx={{ m: 1, bgcolor: "#1976D2", width: "120px" }}
+              sx={{
+                m: 1,
+                width: "120px",
+              }}
             />
             {/* <LockOutlinedIcon /> */}
 
@@ -128,12 +132,12 @@ export default function SignIn() {
               sx={{ mt: 4 }}
             >
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={size?12:6}>
                   <TextField
                     required
                     fullWidth
                     name="userName"
-                    label="user name"
+                    label="Full Name"
                     type="text"
                     id="userName"
                     onChange={formik.handleChange}
@@ -146,7 +150,7 @@ export default function SignIn() {
                   />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={size?12:6}>
                   <TextField
                     required
                     fullWidth
