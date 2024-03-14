@@ -6,8 +6,9 @@ import { JWT_SECRET } from "../config/enviroment.mjs";
 const usersSchema = new mongoose.Schema({
   userName: {
     type: String,
-    required: true,
     unique: true,
+    required: true,
+    minlength: 3,
   },
   email: {
     type: String,
@@ -21,7 +22,7 @@ const usersSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    required: true
+    required: true,
   },
 
   tokens: {

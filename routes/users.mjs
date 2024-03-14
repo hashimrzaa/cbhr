@@ -14,6 +14,7 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/register', async (req, res) => {
+    
     try {
         await Users.create(req.body)
 
