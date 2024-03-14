@@ -19,7 +19,7 @@ router.post("/register", async (req, res) => {
     res.send({ message: "User registered successfully!", users: users });
   } catch (e) {
     res.status(400).send({ message: e.message });
-  }  
+  }
 });
 
 router.put("/login", async (req, res) => {
@@ -44,7 +44,7 @@ router.put("/login", async (req, res) => {
     user.tokens.push(token);
     await user.save();
 
-    res.send({ message: "User logged in successfully!", token });
+    res.send({ message: "User logged in successfully!", token, user: user });
   } catch (e) {
     res.status(400).send({ message: e.message });
   }
