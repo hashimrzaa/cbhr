@@ -46,7 +46,7 @@ export default function SignIn() {
       try {
         setloader(true);
         await axios
-          .post("https://cbhr.vercel.app/users/register", {
+          .post(import.meta.env.VITE_API + "users/register", {
             userName: v.userName,
             email: v.email,
             password: v.password,
@@ -54,7 +54,7 @@ export default function SignIn() {
           })
           .then(async (resr) => {
             await axios
-              .post("https://cbhr.vercel.app/students/add", {
+              .post(import.meta.env.VITE_API + "students/add", {
                 name: v.userName,
                 address: v.address,
                 gender: v.gender,
@@ -63,7 +63,7 @@ export default function SignIn() {
               })
               .then(async (ress) => {
                 await axios
-                  .put("https://cbhr.vercel.app/users/login", {
+                  .put(import.meta.env.VITE_API + "users/login", {
                     email: v.email,
                     password: v.password,
                   })

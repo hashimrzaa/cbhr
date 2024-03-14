@@ -22,7 +22,7 @@ function Navbar() {
   const navigate = useNavigate();
 
   function Logout() {
-    fetch("http://localhost:3000/users/logout", {
+    fetch(import.meta.env.VITE_API + "users/logout", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

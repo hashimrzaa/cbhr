@@ -31,7 +31,7 @@ export default function SignIn() {
       try {
         setloader(true);
         await axios
-          .put("https://cbhr.vercel.app/users/login", {
+          .put(import.meta.env.VITE_API + "users/login", {
             email: v.email,
             password: v.password,
           })
