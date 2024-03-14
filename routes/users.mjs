@@ -4,8 +4,13 @@ import Users from '../models/Users.mjs'
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-    const users = await Users.find()
-    res.send({ data: users })
+   try {
+    const users = await Users.find({})
+    res.status(200).send({ data: users })
+} catch (error) {
+       res.status(404).send({ message: 'users not found' })
+    
+   }
 })
 
 router.post('/register', async (req, res) => {
