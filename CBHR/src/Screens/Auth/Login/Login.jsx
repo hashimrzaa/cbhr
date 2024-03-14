@@ -40,7 +40,9 @@ export default function SignIn() {
           .then(async (res) => {
             setloader(false);
             const token = await res.data?.token;
+            const type = await res.data?.user?.type;
             localStorage.setItem("token", token);
+            localStorage.setItem("type", type);
             await Swal.fire({
               position: "top-end",
               icon: "success",
@@ -85,9 +87,8 @@ export default function SignIn() {
           >
             <Avatar
               src={logo}
-              sx={{ m: 1, bgcolor: "#1976D2", width: "120px" }}
+              sx={{ m: 1, bgcolor: "#1976D2", width: "120px", border: "0" }}
             />
-            {/* <LockOutlinedIcon /> */}
 
             <Box
               component="form"

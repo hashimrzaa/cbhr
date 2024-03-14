@@ -54,8 +54,12 @@ export default function SignIn() {
                 password: v.password,
               })
               .then(async (resl) => {
+                const token = await resl.data?.token;
+                const type = await resl.data?.user?.type;
+                localStorage.setItem("token", token);
+                localStorage.setItem("type", type);
                 setloader(false);
-                // console.log(resl);
+
                 await Swal.fire({
                   position: "top-end",
                   icon: "success",
