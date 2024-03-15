@@ -7,10 +7,16 @@ import {
   TextField,
   useMediaQuery,
 } from "@mui/material";
+import axios from "axios";
 import { useFormik } from "formik";
 import React from "react";
+import { useState } from "react";
+import Swal from "sweetalert2";
 import * as yup from "yup";
+import Loader from "../../../Components/Loader";
 const AddCourse = () => {
+  const [loader, setloader] = useState(false);
+
   const validationSchema = yup.object({
     sirName: yup.string().min(3).required("Sir Name is required"),
     courseName: yup.string().min(3).required("courseName is required"),
@@ -24,15 +30,50 @@ const AddCourse = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (v) => {
-      console.log(v);
+      setloader(true);
+      try {
+        await axios
+          .post(import.meta.env.VITE_API + "courses/add", v)
+          .then(async (res) => {
+            setloader(false);
+            await Swal.fire({
+              icon: "success",
+              title: res.data?.message,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          })
+          .catch(async (e) => {
+            setloader(false);
+            await Swal.fire({
+              icon: "error",
+              text: e.message,
+            });
+          });
+      } catch (error) {
+        setloader(false);
+        await Swal.fire({
+          icon: "error",
+          text: error.message,
+        });
+      }
       formik.resetForm();
     },
   });
   const size = useMediaQuery("(max-width:600px)");
 
   return (
-    <Card sx={{ p: 3, m: "auto", maxWidth: "800px", mt: 5 }}>
-      <div style={{ textAlign: "center", fontSize: "40px",fontWeight:'bold' }}>Add Course</div>
+    <Card sx={{ p: 3, m: "auto", maxWidth: "850px", mt: 5 }}>
+      <div
+        style={{
+          textAlign: "center",
+          fontSize: "40px",
+          fontWeight: "bold",
+          color: "#1976D2",
+        }}
+      >
+        Add Course
+      </div>
       <Box
         component="form"
         onSubmit={(e) => {
@@ -45,6 +86,7 @@ const AddCourse = () => {
         <Grid container spacing={2}>
           <Grid item xs={size ? 12 : 6}>
             <TextField
+              margin="dense"
               required
               value={formik.values.sirName}
               fullWidth
@@ -73,6 +115,7 @@ const AddCourse = () => {
               renderInput={(params) => (
                 <TextField
                   fullWidth
+                  margin="dense"
                   error={formik.touched.days && Boolean(formik.errors.days)}
                   helperText={formik.touched.days && formik.errors.days}
                   {...params}
@@ -83,6 +126,7 @@ const AddCourse = () => {
           </Grid>
           <Grid item xs={12}>
             <TextField
+              margin="dense"
               required
               fullWidth
               value={formik.values.courseName}
@@ -106,7 +150,7 @@ const AddCourse = () => {
               variant="contained"
               sx={{ mt: 1, mb: 2 }}
             >
-              Add Course
+              Add Course{loader?<Loader color={'white'}size={20}/>:null}
             </Button>
           </Grid>
         </Grid>

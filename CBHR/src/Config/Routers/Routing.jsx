@@ -11,6 +11,7 @@ import Course from "../../Screens/Student/course/Course";
 import AddCourse from "../../Screens/Admin/addCourse/AddCourse";
 import AllCourses from "../../Screens/Admin/allCourses/AllCourses";
 import AllStudent from "../../Screens/Admin/allStudents/AllStudent";
+import SingleCourse from "../../Screens/Admin/allCourses/SingleCourse";
 
 const Routing = () => {
   return (
@@ -23,6 +24,7 @@ const Routing = () => {
         <Route path="admin" element={<ProtectedRoutes component={<Admin />} />}>
           <Route path="" element={<AddCourse />} />
           <Route path="allcourses" element={<AllCourses />} />
+          <Route path="allcourses/:id" element={<SingleCourse />} />
           <Route path="allstudents" element={<AllStudent />} />
         </Route>
         <Route path="/register" element={<Register />} />
