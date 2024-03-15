@@ -21,7 +21,6 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/add", async (req, res) => {
-    console.log(req.body);
   try {
     const course = await Course.create(req.body);
     res
