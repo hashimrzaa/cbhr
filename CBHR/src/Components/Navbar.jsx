@@ -25,6 +25,8 @@ import { useState } from "react";
 import Loader from "./Loader";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import SchoolIcon from "@mui/icons-material/School";
+import PersonIcon from "@mui/icons-material/Person";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -189,7 +191,29 @@ export default function Navbar() {
               component="div"
               sx={{ fontWeight: "bold", cursor: "pointer" }}
             >
-              {type == "student" ? "HR" : "HR Admin"}
+              {type == "student" ? (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                    alignItems: "center",
+                  }}
+                >
+                  <PersonIcon key={"a"} /> HR
+                </div>
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    width: "100%",
+                    alignItems: "center",
+                  }}
+                >
+                  <AdminPanelSettingsIcon key={"b"} /> HR
+                </div>
+              )}
             </Typography>
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
@@ -231,8 +255,21 @@ export default function Navbar() {
           </Box>
         </Toolbar>
       </AppBar>
+
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+              alignItems: "center",
+            }}
+          >
+            {type == "student"
+              ? [<PersonIcon key={"a"} />, "Student Portal"]
+              : [<AdminPanelSettingsIcon key={"b"} />, "Admin Portal"]}
+          </div>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
@@ -311,7 +348,7 @@ export default function Navbar() {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Outlet/>
+        <Outlet />
       </Box>
     </Box>
   );
