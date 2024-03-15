@@ -29,10 +29,10 @@ router.put("/edit/:id", async (req, res) => {
       new: true,
     });
     if (!updatedUser) {
-      return res.status(404).send({ message: "Student not found" });
+      return res.status(404).send({ message: "User not found" });
     }
     res.send({
-      message: "Student Edit successfully!",
+      message: "User Edit successfully!",
       student: updatedUser,
     });
   } catch (e) {
