@@ -3,7 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import logo from "../../../assests/logo.jpg";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,8 +12,19 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import Swal from "sweetalert2";
 import Loader from "../../../Components/Loader";
-// import {ref} from 'firebase/storage'
-// import { storage } from "../../../Config/FirebaseStorage/firbaseStorage";
+import PersonSharpIcon from "@mui/icons-material/PersonSharp";
+import CloudDownloadRoundedIcon from "@mui/icons-material/CloudDownloadRounded";
+import { styled } from "@mui/material/styles";
+const VisuallyHiddenInput = styled("input")({
+  opacity: "0",
+  height: 60,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 55,
+});
 export default function SignIn() {
   const navigate = useNavigate();
   const [loader, setloader] = useState(false);
@@ -25,6 +35,7 @@ export default function SignIn() {
       .required("Email is required"),
     userName: yup.string().required("UserName is required"),
     gender: yup.string().min(1).required("gender is required"),
+
     address: yup.string().min(3).required("address is required"),
     courseName: yup.string().min(1).required("Course is required"),
     age: yup.number().min(1).required("Age is required"),
@@ -123,35 +134,18 @@ export default function SignIn() {
   });
   const size = useMediaQuery("(max-width:600px)");
 
-  // upload image in firebase
-  // let [imgurl, setimgurl] = useState();
-
-  // let file = [];
-
-  // async function addFile() {
-  //   const files = file[0][0];
-
-  //   const storageRef = ref(storage, 'email');
-  //   await uploadBytes(storageRef, files)
-  //     .then(async () => {
-  //       await getDownloadURL(storageRef)
-  //         .then((url) => {
-  //           setimgurl(url);
-  //         })
-  //         .catch(async (err) => {
-  //           await Swal.fire({
-  //             icon: "error",
-  //             text: err.message,
-  //           });
-  //         });
-  //     })
-  //     .catch(async (err) => {
-  //       await Swal.fire({
-  //         icon: "error",
-  //         text: err.message,
-  //       });
-  //     });
-  // }
+  const [imagePreview, setImagePreview] = useState(null);
+console.log(imagePreview);
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   return (
     <Box>
       <Container component="main" sx={{ maxWidth: "600px" }} maxWidth={false}>
@@ -164,14 +158,36 @@ export default function SignIn() {
               alignItems: "center",
             }}
           >
-            <Avatar
-              src={logo}
-              sx={{
-                m: 1,
-                width: "120px",
+            <Box
+              style={{
+                width: "60px",
+                height: "60px",
+                background: "#1976D2",
+                position: "relative",
+                borderRadius: "100%",
               }}
-            />
-            {/* <LockOutlinedIcon /> */}
+            >
+              <PersonSharpIcon
+                sx={{
+                  position: "absolute",
+                  top: "20%",
+                  left: "23%",
+                  color: "lightgray",
+                  fontSize: "35px",
+                }}
+              />
+              <CloudDownloadRoundedIcon
+                style={{
+                  position: "absolute",
+                  bottom: "-3%",
+                  right: "7%",
+                  color: "lightgray",
+                  fontSize: "20px",
+                }}
+              />
+              
+              <VisuallyHiddenInput type="file"  onChange={handleImageChange}/>
+            </Box>
 
             <Box
               component="form"
