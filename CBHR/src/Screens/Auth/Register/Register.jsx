@@ -6,7 +6,14 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { Link, useNavigate } from "react-router-dom";
-import { Autocomplete, Card, Grid, useMediaQuery } from "@mui/material";
+import {
+  Autocomplete,
+  Card,
+  Grid,
+  IconButton,
+  InputAdornment,
+  useMediaQuery,
+} from "@mui/material";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -15,6 +22,7 @@ import Loader from "../../../Components/Loader";
 import PersonSharpIcon from "@mui/icons-material/PersonSharp";
 import CloudDownloadRoundedIcon from "@mui/icons-material/CloudDownloadRounded";
 import { styled } from "@mui/material/styles";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 const VisuallyHiddenInput = styled("input")({
   opacity: "0",
   height: 60,
@@ -29,7 +37,11 @@ export default function SignIn() {
   const navigate = useNavigate();
   const [loader, setloader] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
 
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   const validationSchema = yup.object({
     email: yup
       .string()
@@ -138,16 +150,16 @@ export default function SignIn() {
   const size = useMediaQuery("(max-width:600px)");
 
   // console.log(imagePreview);
-    const handleImageChange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setImagePreview(reader.result);
-        };
-        reader.readAsDataURL(file);
-      }
-    };
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   return (
     <Box>
       <Container component="main" sx={{ maxWidth: "600px" }} maxWidth={false}>
@@ -258,14 +270,26 @@ export default function SignIn() {
 
                 <Grid item xs={12}>
                   <TextField
+                    type={showPassword ? "text" : "password"}
                     required
                     fullWidth
                     name="password"
                     label="Password"
-                    type="password"
                     id="password"
-                    // value={formik.values.password}
+                    autoComplete="current-password"
                     onChange={formik.handleChange}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={handleTogglePasswordVisibility}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
                     error={
                       formik.touched.password && Boolean(formik.errors.password)
                     }
@@ -281,7 +305,7 @@ export default function SignIn() {
                     label="Gender"
                     type="text"
                     id="gender"
-                    options={["Male", "Female", "Other"]}
+                    options={["Male", "Female"]}
                     onChange={(e, v) => {
                       formik.values.gender = v;
                     }}

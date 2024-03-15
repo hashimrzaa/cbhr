@@ -7,14 +7,21 @@ import logo from "../../../assests/logo.jpg";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import { Link, useNavigate } from "react-router-dom";
-import { Card } from "@mui/material";
+import { Card, IconButton, InputAdornment } from "@mui/material";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Swal from "sweetalert2";
 import Loader from "../../../Components/Loader";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function SignIn() {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const [loader, setloader] = useState(false);
   const navigate = useNavigate();
   const validationSchema = yup.object({
@@ -115,21 +122,32 @@ export default function SignIn() {
                 helperText={formik.touched.email && formik.errors.email}
               />
               <TextField
+                type={showPassword ? "text" : "password"}
                 margin="normal"
                 required
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
                 id="password"
                 autoComplete="current-password"
                 onChange={formik.handleChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={handleTogglePasswordVisibility}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
                 error={
                   formik.touched.password && Boolean(formik.errors.password)
                 }
                 helperText={formik.touched.password && formik.errors.password}
               />
-
               <Button
                 type="submit"
                 fullWidth
