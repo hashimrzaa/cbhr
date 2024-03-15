@@ -9,8 +9,8 @@ const StudentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  courseName: {
-    type: String,
+  course: {
+    type: Object,
     required: true,
   },
   address: {
@@ -21,10 +21,7 @@ const StudentSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  day:{
-    type: String,
-    required: true,
-  }
+ 
 });
 
 const Students = mongoose.model("Students", StudentSchema);
