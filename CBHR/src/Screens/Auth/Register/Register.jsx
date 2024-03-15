@@ -28,6 +28,8 @@ const VisuallyHiddenInput = styled("input")({
 export default function SignIn() {
   const navigate = useNavigate();
   const [loader, setloader] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
+
   const validationSchema = yup.object({
     email: yup
       .string()
@@ -35,6 +37,7 @@ export default function SignIn() {
       .required("Email is required"),
     userName: yup.string().required("UserName is required"),
     gender: yup.string().min(1).required("gender is required"),
+
     address: yup.string().min(3).required("address is required"),
     courseName: yup.string().min(1).required("Course is required"),
     age: yup.number().min(1).required("Age is required"),
@@ -60,6 +63,7 @@ export default function SignIn() {
             userName: v.userName,
             email: v.email,
             password: v.password,
+            // image: imagePreview ? imagePreview : "",
             type: "student",
           })
           .then(async (resr) => {
@@ -133,18 +137,17 @@ export default function SignIn() {
   });
   const size = useMediaQuery("(max-width:600px)");
 
-  const [imagePreview, setImagePreview] = useState(null);
-console.log(imagePreview);
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // console.log(imagePreview);
+    const handleImageChange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
   return (
     <Box>
       <Container component="main" sx={{ maxWidth: "600px" }} maxWidth={false}>
@@ -157,36 +160,46 @@ console.log(imagePreview);
               alignItems: "center",
             }}
           >
-            <Box
-              style={{
-                width: "60px",
-                height: "60px",
-                background: "#1976D2",
-                position: "relative",
-                borderRadius: "100%",
-              }}
-            >
-              <PersonSharpIcon
-                sx={{
-                  position: "absolute",
-                  top: "20%",
-                  left: "23%",
-                  color: "lightgray",
-                  fontSize: "35px",
-                }}
-              />
-              <CloudDownloadRoundedIcon
+            {!imagePreview ? (
+              <Box
                 style={{
-                  position: "absolute",
-                  bottom: "-3%",
-                  right: "7%",
-                  color: "lightgray",
-                  fontSize: "20px",
+                  width: "60px",
+                  height: "60px",
+                  background: "#1976D2",
+                  position: "relative",
+                  borderRadius: "100%",
+                }}
+              >
+                <PersonSharpIcon
+                  sx={{
+                    position: "absolute",
+                    top: "20%",
+                    left: "23%",
+                    color: "lightgray",
+                    fontSize: "35px",
+                  }}
+                />
+                <CloudDownloadRoundedIcon
+                  style={{
+                    position: "absolute",
+                    bottom: "-3%",
+                    right: "7%",
+                    color: "lightgray",
+                    fontSize: "20px",
+                  }}
+                />
+
+                <VisuallyHiddenInput type="file" onChange={handleImageChange} />
+              </Box>
+            ) : (
+              <Avatar
+                src={imagePreview}
+                sx={{
+                  width: "60px",
+                  height: "60px",
                 }}
               />
-              
-              <VisuallyHiddenInput type="file"  onChange={handleImageChange}/>
-            </Box>
+            )}
 
             <Box
               component="form"
