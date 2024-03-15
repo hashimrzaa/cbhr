@@ -20,13 +20,18 @@ const ProtectedRoutes = ({ component }) => {
   }, [token, navigate]);
 
   useEffect(() => {
-    if (isUser && type === "admin") {
-      navigate("/admin");
-    } else if (isUser && type === "student") {
-      navigate("/");
+    if (location.pathname === "/admin") {
+      if (isUser && type === "student") {
+        navigate("/");
+      }
     }
-  }, [isUser, type]);
 
+    if (location.pathname === "/") {
+      if (isUser && type === "admin") {
+        navigate("/admin");
+      }
+    }
+  }, [isUser, type, location.pathname]);
   return (
     <>
       <CssBaseline />
@@ -34,7 +39,14 @@ const ProtectedRoutes = ({ component }) => {
       {isUser ? (
         component
       ) : (
-        <div style={{position:"absolute",left:'45%',top:'50%',zIndex:'1000'}}>
+        <div
+          style={{
+            position: "absolute",
+            left: "45%",
+            top: "50%",
+            zIndex: "1000",
+          }}
+        >
           <Loader size={50} mt={"50vh"} />
         </div>
       )}
