@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import HR from "./HR/HR";
 
 const Student = () => {
-  return (
-    <div>Student</div>
-  )
-}
+  return <></>;
+};
 
-export default Student
+export default Student;

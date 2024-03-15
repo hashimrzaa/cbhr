@@ -3,7 +3,6 @@ import Loader from "../../Components/Loader";
 import Navbar from "../../Components/Navbar";
 import { CssBaseline } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import Admin from "../../Screens/Admin/Admin";
 
 const ProtectedRoutes = ({ component }) => {
   const navigate = useNavigate();
@@ -26,7 +25,7 @@ const ProtectedRoutes = ({ component }) => {
     } else if (isUser && type === "student") {
       navigate("/");
     }
-  }, [isUser, type, navigate]);
+  }, [isUser, type]);
 
   return (
     <>

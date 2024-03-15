@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
+import AddCourse from "./addCourse/AddCourse";
 
 const Admin = () => {
   return (
-    <div>Admin</div>
-  )
-}
+    <div>
+    </div>
+  );
+};
 
-export default Admin
+export default Admin;
