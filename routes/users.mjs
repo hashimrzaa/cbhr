@@ -22,6 +22,24 @@ router.post("/register", async (req, res) => {
   }
 });
 
+router.put("/edit/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updatedUser = await Users.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    if (!updatedUser) {
+      return res.status(404).send({ message: "Student not found" });
+    }
+    res.send({
+      message: "Student Edit successfully!",
+      student: updatedUser,
+    });
+  } catch (e) {
+    res.status(400).send({ message: e.message });
+  }
+});
+
 router.put("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
