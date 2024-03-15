@@ -34,7 +34,7 @@ const ProtectedRoutes = ({ component }) => {
       {isUser ? (
         component
       ) : (
-        <div style={{position:"absolute",left:'45%',top:'50%'}}>
+        <div style={{position:"absolute",left:'45%',top:'50%',zIndex:'1000'}}>
           <Loader size={50} mt={"50vh"} />
         </div>
       )}

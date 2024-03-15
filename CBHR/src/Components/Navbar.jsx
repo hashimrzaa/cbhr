@@ -27,6 +27,8 @@ import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import SchoolIcon from "@mui/icons-material/School";
 import PersonIcon from "@mui/icons-material/Person";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import "sweetalert2/dist/sweetalert2.css";
+import "./index.css";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -128,6 +130,11 @@ export default function Navbar() {
           title: res.message,
           showConfirmButton: false,
           timer: 1500,
+          customClass: {
+            container: "custom-swal-container",
+            popup: "custom-swal-popup",
+            content: "custom-swal-content",
+          },
         });
         localStorage.clear();
         navigate("/login");
@@ -137,6 +144,11 @@ export default function Navbar() {
         await Swal.fire({
           icon: "error",
           text: e.message,
+          customClass: {
+            container: "custom-swal-container",
+            popup: "custom-swal-popup",
+            content: "custom-swal-content",
+          },
         });
       });
   }
@@ -159,7 +171,14 @@ export default function Navbar() {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       {loader ? (
-        <div style={{ position: "absolute", left: "47%", top: "50%" }}>
+        <div
+          style={{
+            position: "absolute",
+            left: "47%",
+            top: "50%",
+            zIndex: "10000",
+          }}
+        >
           <Loader size={50} mt={"50vh"} />
         </div>
       ) : null}

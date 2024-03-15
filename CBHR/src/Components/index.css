@@ -1,0 +1,15 @@
+.swal-overlay {
+    z-index: 10000000 !important;
+  }
+  /* styles.css */
+.custom-swal-container {
+  width: 100%; /* Adjust the width as needed */
+}
+
+.custom-swal-popup {
+  width: 60%; /* Adjust the width as needed */
+}
+
+/* .custom-swal-content {
+  /* Optionally, adjust other styles such as font size, padding, etc. */
+/* } */ 

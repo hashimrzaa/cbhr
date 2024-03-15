@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -38,7 +38,24 @@ export default function SignIn() {
   const [loader, setloader] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [course, setcourse] = useState([]);
 
+  useEffect(() => {
+    async function getCourses() {
+      try {
+        const res = await axios.get(import.meta.env.VITE_API + "courses");
+        const data = res.data?.data;
+        setcourse(
+          data.map((item) => {
+            return item.courseName;
+          })
+        );
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
+    }
+    getCourses();
+  }, [navigate]);
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -228,7 +245,7 @@ export default function SignIn() {
                     required
                     fullWidth
                     name="userName"
-                    label="Full Name"
+                    label="User Name"
                     type="text"
                     id="userName"
                     onChange={formik.handleChange}
@@ -331,7 +348,7 @@ export default function SignIn() {
                     label="Course"
                     type="text"
                     id="courseName"
-                    options={["wep", "tech"]}
+                    options={course}
                     onChange={(e, v) => {
                       formik.values.courseName = v;
                     }}
