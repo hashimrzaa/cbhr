@@ -14,6 +14,9 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import * as yup from "yup";
 import Loader from "../../../Components/Loader";
+import "./index.css";
+import "sweetalert2/dist/sweetalert2.css";
+
 const AddCourse = () => {
   const [loader, setloader] = useState(false);
 
@@ -48,6 +51,11 @@ const AddCourse = () => {
             await Swal.fire({
               icon: "error",
               text: e.message,
+              customClass: {
+                container: "custom-swal-container",
+                popup: "custom-swal-popup",
+                content: "custom-swal-content",
+              },
             });
           });
       } catch (error) {
@@ -55,6 +63,11 @@ const AddCourse = () => {
         await Swal.fire({
           icon: "error",
           text: error.message,
+          customClass: {
+            container: "custom-swal-container",
+            popup: "custom-swal-popup",
+            content: "custom-swal-content",
+          },
         });
       }
       formik.resetForm();
@@ -150,7 +163,7 @@ const AddCourse = () => {
               variant="contained"
               sx={{ mt: 1, mb: 2 }}
             >
-              Add Course{loader?<Loader color={'white'}size={20}/>:null}
+              Add Course{loader ? <Loader color={"white"} size={20} /> : null}
             </Button>
           </Grid>
         </Grid>

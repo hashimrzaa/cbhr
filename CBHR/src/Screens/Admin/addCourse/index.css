@@ -1,0 +1,10 @@
+.swal-overlay {
+  z-index: 10000000 !important;
+}
+.custom-swal-container {
+  width: 100%;
+}
+
+.custom-swal-popup {
+  width: 60%;
+}
