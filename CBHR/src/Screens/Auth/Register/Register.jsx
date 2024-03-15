@@ -35,7 +35,6 @@ export default function SignIn() {
       .required("Email is required"),
     userName: yup.string().required("UserName is required"),
     gender: yup.string().min(1).required("gender is required"),
-
     address: yup.string().min(3).required("address is required"),
     courseName: yup.string().min(1).required("Course is required"),
     age: yup.number().min(1).required("Age is required"),
