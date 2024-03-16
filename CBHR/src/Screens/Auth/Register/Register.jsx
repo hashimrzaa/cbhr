@@ -92,7 +92,6 @@ export default function SignIn() {
             userName: v.userName,
             email: v.email,
             password: v.password,
-            // image: imagePreview ? imagePreview : "",
             type: "student",
           })
           .then(async (resr) => {
@@ -113,7 +112,7 @@ export default function SignIn() {
                   .then(async (resl) => {
                     const token = await resl.data?.token;
                     const type = await resl.data?.user?.type;
-                    const userId = await res.data?.user?._id;
+                    const userId = await resl.data?.user?._id;
 
                     localStorage.setItem("token", token);
                     localStorage.setItem("type", type);

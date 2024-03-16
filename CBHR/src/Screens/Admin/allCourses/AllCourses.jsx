@@ -132,7 +132,7 @@ function AllCourses() {
             fontSize: "27px",
           }}
         >
-          No Courses Are Availables Now
+          No Courses Are Available Now
         </div>
       )}
     </Grid>
