@@ -12,6 +12,7 @@ import AddCourse from "../../Screens/Admin/addCourse/AddCourse";
 import AllCourses from "../../Screens/Admin/allCourses/AllCourses";
 import AllStudent from "../../Screens/Admin/allStudents/AllStudent";
 import SingleCourse from "../../Screens/Admin/allCourses/SingleCourse";
+import SingleStudent from "../../Screens/Admin/allStudents/SingleStudent";
 
 const Routing = () => {
   return (
@@ -26,6 +27,7 @@ const Routing = () => {
           <Route path="allcourses" element={<AllCourses />} />
           <Route path="allcourses/:id" element={<SingleCourse />} />
           <Route path="allstudents" element={<AllStudent />} />
+          <Route path="allstudents/:id" element={<SingleStudent />} />
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

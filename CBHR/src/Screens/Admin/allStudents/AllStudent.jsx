@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import Loader from "../../../Components/Loader";
 import Swal from "sweetalert2";
 import { Delete } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const AllStudent = () => {
   const [data, setData] = useState([]);
@@ -12,7 +13,7 @@ const AllStudent = () => {
   const [loader2, setLoader2] = useState(false);
   const [fetch, setfetch] = useState(false);
   const [indexx, setindex] = useState();
-
+  const navigate = useNavigate();
   useEffect(() => {
     const getStudents = async () => {
       setLoader(true);
@@ -117,7 +118,14 @@ const AllStudent = () => {
                     }}
                   >
                     <Avatar src={item.name} alt={item.name} />
-                    <div style={{ color: "#1976d2" }}>{item.name}</div>
+                    <div
+                      style={{ color: "#1976d2" }}
+                      onClick={() => {
+                        navigate(item._id);
+                      }}
+                    >
+                      {item.name}
+                    </div>
                   </div>
                   <Button
                     onClick={() => {
@@ -125,7 +133,11 @@ const AllStudent = () => {
                       deleteStudent(item._id, item.name);
                     }}
                   >
-                    {loader2 && indexx == index ? <Loader size={20} /> : <Delete />}
+                    {loader2 && indexx == index ? (
+                      <Loader size={20} />
+                    ) : (
+                      <Delete />
+                    )}
                   </Button>
                 </Card>
               );

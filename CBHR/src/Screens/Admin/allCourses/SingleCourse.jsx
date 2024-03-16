@@ -13,7 +13,7 @@ const SingleCourse = () => {
         async (resc) => {
           await axios(import.meta.env.VITE_API + "students").then(
             async (res) => {
-              const students = res.data?.data?.filter(
+              const students = res.data?.data?.find(
                 (item, index) => item.courseName == resc.data?.data?.courseName
               );
               setstudents(students);
@@ -26,6 +26,8 @@ const SingleCourse = () => {
 
     getSingleCourse();
   }, []);
+  console.log(data);
+  console.log(students);
   return <div>SingleCourse</div>;
 };
 
