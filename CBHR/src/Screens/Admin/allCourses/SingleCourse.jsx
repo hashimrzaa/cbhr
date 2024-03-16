@@ -6,14 +6,14 @@ import { useParams } from "react-router-dom";
 const SingleCourse = () => {
   const { id } = useParams();
   const [data, setdata] = useState({});
-  const [students, setstudents] = useState({});
+  const [students, setstudents] = useState([]);
   useEffect(() => {
     const getSingleCourse = async () => {
       await axios(import.meta.env.VITE_API + "courses/" + id).then(
         async (resc) => {
           await axios(import.meta.env.VITE_API + "students").then(
             async (res) => {
-              const students = res.data?.data?.find(
+              const students = res.data?.data?.filter(
                 (item, index) => item.courseName == resc.data?.data?.courseName
               );
               setstudents(students);
@@ -26,8 +26,7 @@ const SingleCourse = () => {
 
     getSingleCourse();
   }, []);
-  console.log(data);
-  console.log(students);
+
   return <div>SingleCourse</div>;
 };
 

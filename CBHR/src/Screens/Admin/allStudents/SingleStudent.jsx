@@ -24,8 +24,7 @@ const SingleStudent = () => {
     }
     getStudent();
   }, []);
-  console.log(StudentData);
-  console.log(UserData);
+
 
   return <div>SingleStudent</div>;
 };
