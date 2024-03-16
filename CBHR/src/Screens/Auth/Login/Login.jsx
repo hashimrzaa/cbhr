@@ -46,8 +46,10 @@ export default function SignIn() {
             setloader(false);
             const token = await res.data?.token;
             const type = await res.data?.user?.type;
+            const userId = await res.data?.user?._id
             localStorage.setItem("token", token);
             localStorage.setItem("type", type);
+            localStorage.setItem("userId", userId);
             await Swal.fire({
               position: "top-end",
               icon: "success",
