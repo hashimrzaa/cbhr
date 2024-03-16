@@ -11,6 +11,15 @@ router.get("/", async (req, res) => {
     res.status(404).send({ message: "users not found" });
   }
 });
+router.get("/:id", async (req, res) => {
+  const {id} = req.params
+  try {
+    const user = await Users.find({id});
+    res.status(200).send({ data: user });
+  } catch (error) {
+    res.status(404).send({ message: "user not found" });
+  }
+});
 
 router.post("/register", async (req, res) => {
   try {
