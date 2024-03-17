@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
   }
 });
 router.get("/:id", async (req, res) => {
-  const {id} = req.params
+  const { id } = req.params;
   try {
     const user = await Users.findById(id);
     res.status(200).send({ data: user });
@@ -33,19 +33,50 @@ router.post("/register", async (req, res) => {
 
 router.put("/edit/:id", async (req, res) => {
   const { id } = req.params;
+  const { userName, image } = req.body;
+
   try {
-    const updatedUser = await Users.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
+    const updatedUser = await Users.findByIdAndUpdate(
+      id,
+      { userName, image },
+      { new: true }
+    );
+
     if (!updatedUser) {
-      return res.status(404).send({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
-    res.send({
-      message: "User Edit successfully!",
-      student: updatedUser,
+
+    res.json({
+      message: "User edited successfully!",
+      user: updatedUser,
     });
-  } catch (e) {
-    res.status(400).send({ message: e.message });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+router.put("/edit/password/:id", async (req, res) => {
+  const { id } = req.params;
+  const { password } = req.body;
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const updatedUser = await Users.findByIdAndUpdate(
+      id,
+      { password: hashedPassword }, 
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      message: "Password updated successfully!",
+      user: updatedUser,
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 });
 
