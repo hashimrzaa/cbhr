@@ -21,7 +21,9 @@ const StudentSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
- 
+  image: {
+    type: String,
+  },
 });
 
 const Students = mongoose.model("Students", StudentSchema);
