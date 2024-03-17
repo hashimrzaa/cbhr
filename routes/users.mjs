@@ -2,6 +2,7 @@ import express from "express";
 import verifyToken from "../middlewares/verifytoken.mjs";
 import Users from "../models/Users.mjs";
 const router = express.Router();
+import bcrypt from "bcryptjs";
 
 router.get("/", async (req, res) => {
   try {
@@ -63,7 +64,7 @@ router.put("/edit/password/:id", async (req, res) => {
 
     const updatedUser = await Users.findByIdAndUpdate(
       id,
-      { password: hashedPassword }, 
+      { password: hashedPassword },
       { new: true }
     );
 
