@@ -56,15 +56,22 @@ router.put("/edit/:id", async (req, res) => {
   }
 });
 router.put("/edit/password/:id", async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
   const { id } = req.params;
-  const { password } = req.body;
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await Users.findById(id);
+
+    const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Old password is incorrect" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     const updatedUser = await Users.findByIdAndUpdate(
       id,
-      { password: hashedPassword },
+      { password: hashedPassword }, 
       { new: true }
     );
 
@@ -77,7 +84,7 @@ router.put("/edit/password/:id", async (req, res) => {
       user: updatedUser,
     });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 });
 
