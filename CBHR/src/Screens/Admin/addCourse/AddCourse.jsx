@@ -76,16 +76,18 @@ const AddCourse = () => {
   const size = useMediaQuery("(max-width:600px)");
 
   return (
-    <Card sx={{ p: 3, m: "auto", maxWidth: "850px", mt: 5 }}>
+    <Card sx={{  m: "auto", maxWidth: "700px", mt: 5 }}>
       <div
         style={{
           textAlign: "center",
           fontSize: "40px",
           fontWeight: "bold",
-          color: "#1976D2",
+          color: "gray",
+          padding: 30,
+          paddingBottom:0
         }}
       >
-        Add Course
+        ADD COURSE
       </div>
       <Box
         component="form"
@@ -94,7 +96,7 @@ const AddCourse = () => {
           formik.handleSubmit();
         }}
         noValidate
-        sx={{ mt: 4 }}
+        sx={{p: 3, mt: 4 ,pt:0}}
       >
         <Grid container spacing={2}>
           <Grid item xs={size ? 12 : 6}>

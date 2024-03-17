@@ -2,13 +2,27 @@ import axios from "axios";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { ArrowBack, SchoolRounded } from "@mui/icons-material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  Divider,
+  useMediaQuery,
+} from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
+import Loader from "../../../Components/Loader";
+import Swal from "sweetalert2";
 
 const Course = () => {
-  const [StudentData, setStudentData] = useState([]);
-  const [CourseData, setCourseData] = useState({});
+  const [students, setStudentData] = useState([]);
+  const [data, setCourseData] = useState({});
   const Uid = localStorage.getItem("userId");
   useEffect(() => {
     async function getData() {
+      setloader(true);
+      setloader2(true);
       await axios(import.meta.env.VITE_API + "users/" + Uid)
         .then(async (res) => {
           const name = res.data?.data?.userName;
@@ -16,32 +30,181 @@ const Course = () => {
             async (res) => {
               const find = res.data?.data?.find((item) => item.name == name);
               const courseName = find.courseName;
-              axios(import.meta.env.VITE_API + "courses").then(async (resc) => {
-                const find = resc.data?.data?.find(
-                  (item) => item.courseName == courseName
-                );
-                await axios(import.meta.env.VITE_API + "students").then(
-                  (res) => {
-                    const find = res.data?.data?.filter(
-                      (item) => item.courseName == courseName
-                    );
-                    setStudentData(find);
-                  }
-                );
-                setCourseData(find);
-              });
+              axios(import.meta.env.VITE_API + "courses")
+                .then(async (resc) => {
+                  const find = resc.data?.data?.find(
+                    (item) => item.courseName == courseName
+                  );
+                  await axios(import.meta.env.VITE_API + "students").then(
+                    (res) => {
+                      const find = res.data?.data?.filter(
+                        (item) => item.courseName == courseName
+                      );
+                      setStudentData(find);
+                      setloader(false);
+                      setloader2(false);
+                    }
+                  );
+                  setCourseData(find);
+                })
+                .catch((e) => {
+                  console.log(e);
+                  setloader(false);
+                  setloader2(false);
+                });
             }
           );
         })
-        .catch((e) => {
+        .catch(async (e) => {
           console.log(e);
+          setloader(false);
+          setloader2(false);
+          await Swal.fire({
+            icon: "error",
+            title: e.message,
+          });
         });
     }
     getData();
   }, []);
-  console.log(StudentData);
-  console.log(CourseData);
-  return <div>Course</div>;
+  const { id } = useParams();
+  const size = useMediaQuery("(max-width:600px)");
+  const [loader, setloader] = useState(false);
+  const [loader2, setloader2] = useState(false);
+  return (
+    <div>
+      <Card sx={{ position: "relative", overflow: "auto" }}>
+    
+        <Box>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              padding: 30,
+              width: "100%",
+              justifyContent: "center",
+              gap: 50,
+              flexWrap: "wrap",
+            }}
+          >
+            <SchoolRounded sx={{ fontSize: 150 }} />
+            {data.courseName ? (
+              <div>
+                <div
+                  style={{
+                    fontSize: "2em",
+                    textAlign: "center",
+                    fontWeight: "600",
+                  }}
+                >
+                  {data.courseName}
+                </div>
+                <div
+                  style={{
+                    fontSize: "1.4em",
+                    textAlign: "center",
+                    fontWeight: "300",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 20,
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <span>
+                    Course By<b style={{ color: "gray" }}> {data.sirName}</b>
+                  </span>
+                </div>
+              </div>
+            ) : loader2 ? (
+              <Loader color={"black"} />
+            ) : null}
+          </div>
+        </Box>
+        <Divider />
+        <Box
+          key={"amksek"}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+          }}
+        >
+          {students.length > 0 ? (
+            students.map((item, index) => {
+              return (
+                <>
+                  <Box
+                    key={index}
+                    sx={{
+                      p: 3,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "15px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <Avatar
+                        src={item.name}
+                        alt={item.name}
+                        sx={{ width: "55px", height: "55px" }}
+                      />
+                      <div
+                        style={{
+                          color: "#1976d2",
+                          fontSize: "20px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        {item.name}
+                        {!size ? (
+                          <span style={{ fontWeight: "350", fontSize: "18px" }}>
+                            {" "}
+                            From{" "}
+                            <b
+                              style={{
+                                color: "gray",
+                                fontSize: "16px",
+                                fontWeight: "500",
+                              }}
+                            >
+                              {item.address?.toUpperCase()}
+                            </b>
+                          </span>
+                        ) : null}
+                      </div>
+                    </div>
+                  </Box>
+                  <Divider />
+                </>
+              );
+            })
+          ) : loader ? (
+            <div style={{ padding: 30 }}>
+              <Loader size={50} />
+            </div>
+          ) : (
+            <div
+              style={{
+                fontSize: "23px",
+                padding: 30,
+                textAlign: "center",
+              }}
+            >
+              No Students Are Available Now in this Course
+            </div>
+          )}
+        </Box>
+      </Card>
+    </div>
+  );
 };
 
 export default Course;

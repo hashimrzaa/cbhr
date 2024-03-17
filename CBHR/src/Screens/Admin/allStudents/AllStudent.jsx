@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Card, Divider } from "@mui/material";
+import { Avatar, Box, Button, Card, Divider, useMediaQuery } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
@@ -74,36 +74,38 @@ const AllStudent = () => {
       });
     }
   }
+  const size = useMediaQuery('(max-width:600px)')
   return (
     <div>
-      <Card>
+      <Card sx={{overflow:'auto'}}>
         <div
           style={{
             padding: "1.5rem",
-            fontSize: "30px",
-            fontWeight: "bold",
-            color: "#1976d2",
+            fontSize: "35px",
+            fontWeight: "500",
+            color: "white",
+            textAlign:'center',
+            background:'#1976d2',
+            letterSpacing:'1.5px'
           }}
         >
-          All Students
+          ALL STUDENTS
         </div>
-        <Divider />
         <Box
           sx={{
             display: "flex",
             justifyContent: "center",
-            gap: 3,
             flexDirection: "column",
-            p: 4,
           }}
         >
           {data.length > 0 ? (
             data.map((item, index) => {
               return (
-                <Card
+                <>
+                <Box
                   key={index}
                   sx={{
-                    p: 2,
+                    p: 3,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
@@ -113,18 +115,18 @@ const AllStudent = () => {
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: "10px",
+                      gap: "15px",
                       cursor: "pointer",
                     }}
                   >
-                    <Avatar src={item.name} alt={item.name} />
+                    <Avatar src={item.name} alt={item.name} sx={{width:'55px',height:'55px'}}/>
                     <div
-                      style={{ color: "#1976d2" }}
+                      style={{ color: "#1976d2" , fontSize:'20px',fontWeight:'500' }}
                       onClick={() => {
                         navigate(item._id);
                       }}
                     >
-                      {item.name}
+                      {item.name}{!size? <span style={{fontWeight:'350',fontSize:'18px'}}> From <b style={{color:'gray',fontSize:'16px',fontWeight:'500'}}>{item.address?.toUpperCase()}</b></span>:null}
                     </div>
                   </div>
                   <Button
@@ -139,11 +141,15 @@ const AllStudent = () => {
                       <Delete />
                     )}
                   </Button>
-                </Card>
+                </Box>
+                <Divider/>
+                </>
               );
             })
           ) : loader ? (
+            <div style={{ padding: 30 }}>
             <Loader size={50} />
+          </div>
           ) : (
             <div
               style={{

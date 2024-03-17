@@ -14,9 +14,11 @@ import AssessmentTwoToneIcon from "@mui/icons-material/AssessmentTwoTone";
 import styled from "@mui/system/styled";
 import { SchoolRounded } from "@mui/icons-material";
 import { useEffect, useState } from "react";
+
 import axios from "axios";
 import Loader from "../../../Components/Loader";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const AvatarError = styled(Avatar)(
   ({ theme }) => `
@@ -44,7 +46,12 @@ function AllCourses() {
         setData(res.data?.data);
         setloader(false);
       } catch (error) {
+        setloader(false)
         console.error(error);
+        Swal.fire({
+          icon:'error',
+          title:error.message
+        })
       }
     }
     getCourses();
