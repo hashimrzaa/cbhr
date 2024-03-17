@@ -31,9 +31,9 @@ const AllStudent = () => {
         console.error("Error fetching students:", error);
         setLoader(false);
         Swal.fire({
-          icon:'error',
-          title:error.message
-        })
+          icon: "error",
+          title: error.message,
+        });
       } finally {
         setLoader(false);
       }
@@ -98,7 +98,7 @@ const AllStudent = () => {
             textAlign: "center",
             background: size ? "" : "#1976d2",
             letterSpacing: "1.5px",
-            overflow:'auto'
+            overflow: "auto",
           }}
         >
           ALL STUDENTS
@@ -134,7 +134,7 @@ const AllStudent = () => {
                       }}
                     >
                       <Avatar
-                        src={item.name}
+                        src={item.image ? item.image : item.name}
                         alt={item.name}
                         sx={{ width: "55px", height: "55px" }}
                       />
@@ -191,8 +191,8 @@ const AllStudent = () => {
             <div
               style={{
                 fontSize: "20px",
-                padding: 30 ,
-                textAlign:'center'
+                padding: 30,
+                textAlign: "center",
               }}
             >
               No Students Are Available Now

@@ -78,7 +78,7 @@ const SingleCourse = () => {
               justifyContent: "center",
               gap: 50,
               flexWrap: "wrap",
-              overflow:'auto'
+              overflow: "auto",
             }}
           >
             <SchoolRounded sx={{ fontSize: 150 }} />
@@ -117,12 +117,11 @@ const SingleCourse = () => {
         </Box>
         <Divider />
         <Box
-         
           sx={{
             display: "flex",
             justifyContent: "center",
             flexDirection: "column",
-            overflow:'auto'
+            overflow: "auto",
           }}
         >
           {students.length > 0 ? (
@@ -145,12 +144,11 @@ const SingleCourse = () => {
                         alignItems: "center",
                         gap: "15px",
                         cursor: "pointer",
-                      flexDirection: size ? "column" : "row",
-
+                        flexDirection: size ? "column" : "row",
                       }}
                     >
                       <Avatar
-                        src={item.name}
+                        src={item.image ? item.image : item.name}
                         alt={item.name}
                         sx={{ width: "55px", height: "55px" }}
                       />

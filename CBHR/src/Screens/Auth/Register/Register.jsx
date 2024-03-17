@@ -23,6 +23,8 @@ import PersonSharpIcon from "@mui/icons-material/PersonSharp";
 import CloudDownloadRoundedIcon from "@mui/icons-material/CloudDownloadRounded";
 import { styled } from "@mui/material/styles";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "../../../Config/FirebaseStorage/FirebaseStorage";
 const VisuallyHiddenInput = styled("input")({
   opacity: "0",
   height: 60,
@@ -36,9 +38,9 @@ const VisuallyHiddenInput = styled("input")({
 export default function SignIn() {
   const navigate = useNavigate();
   const [loader, setloader] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [course, setcourse] = useState([]);
+  const [isUrl, setisUrl] = useState(false);
 
   useEffect(() => {
     async function getCourses() {
@@ -87,12 +89,20 @@ export default function SignIn() {
     onSubmit: async (v) => {
       try {
         setloader(true);
+        if (imgurl) {
+          setisUrl(false);
+        } else {
+          setisUrl(true);
+          setloader(false);
+          return;
+        }
         await axios
           .post(import.meta.env.VITE_API + "users/register", {
             userName: v.userName,
             email: v.email,
             password: v.password,
             type: "student",
+            image: imgurl ? imgurl : "",
           })
           .then(async (resr) => {
             await axios
@@ -102,6 +112,7 @@ export default function SignIn() {
                 gender: v.gender,
                 age: +v.age,
                 courseName: v.courseName,
+                image: imgurl ? imgurl : "",
               })
               .then(async (ress) => {
                 await axios
@@ -169,17 +180,38 @@ export default function SignIn() {
 
   const size = useMediaQuery("(max-width:600px)");
 
-  // console.log(imagePreview);
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setLoaderIMG(true);
+      const storageRef = ref(storage, `${file.size}`);
+      uploadBytes(storageRef, file)
+        .then(() => {
+          getDownloadURL(storageRef)
+            .then((url) => {
+              setimgurl(`${url}`);
+              setLoaderIMG(false);
+              url ? setisUrl(false) : null;
+            })
+            .catch((err) => {
+              setLoaderIMG(false);
+              Swal.fire({
+                icon: "error",
+                title: err.message,
+              });
+            });
+        })
+        .catch((err) => {
+          setLoaderIMG(false);
+          Swal.fire({
+            icon: "error",
+            title: err.message,
+          });
+        });
     }
   };
+  let [LoaderIMG, setLoaderIMG] = React.useState(false);
+  let [imgurl, setimgurl] = React.useState("");
   return (
     <Box>
       <Container component="main" sx={{ maxWidth: "600px" }} maxWidth={false}>
@@ -192,7 +224,7 @@ export default function SignIn() {
               alignItems: "center",
             }}
           >
-            {!imagePreview ? (
+            {!imgurl ? (
               <Box
                 style={{
                   width: "60px",
@@ -200,44 +232,59 @@ export default function SignIn() {
                   background: "#1976D2",
                   position: "relative",
                   borderRadius: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                <PersonSharpIcon
-                  sx={{
-                    position: "absolute",
-                    top: "20%",
-                    left: "23%",
-                    color: "lightgray",
-                    fontSize: "35px",
-                  }}
-                />
-                <CloudDownloadRoundedIcon
-                  style={{
-                    position: "absolute",
-                    bottom: "-3%",
-                    right: "7%",
-                    color: "lightgray",
-                    fontSize: "20px",
-                  }}
-                />
-
-                <VisuallyHiddenInput type="file" onChange={handleImageChange} />
+                {!LoaderIMG ? (
+                  <>
+                    <PersonSharpIcon
+                      sx={{
+                        position: "absolute",
+                        top: "20%",
+                        left: "23%",
+                        color: "lightgray",
+                        fontSize: "35px",
+                      }}
+                    />
+                    <CloudDownloadRoundedIcon
+                      style={{
+                        position: "absolute",
+                        bottom: "-3%",
+                        right: "7%",
+                        color: "lightgray",
+                        fontSize: "20px",
+                      }}
+                    />
+                    <VisuallyHiddenInput
+                      accept="image/*"
+                      type="file"
+                      onChange={handleImageChange}
+                    />
+                  </>
+                ) : (
+                  <Loader color={"WHITE"} size={20} />
+                )}
               </Box>
             ) : (
               <Avatar
-                src={imagePreview}
+                src={imgurl}
                 sx={{
                   width: "60px",
                   height: "60px",
                 }}
               />
             )}
-
+            {isUrl ? (
+              <div style={{ color: "red" }}>Image is required</div>
+            ) : null}
             <Box
               component="form"
               onSubmit={(e) => {
                 e.preventDefault();
                 formik.handleSubmit();
+                setisUrl(true);
               }}
               noValidate
               sx={{ mt: 4 }}

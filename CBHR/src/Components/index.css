@@ -7,5 +7,6 @@
 
 .custom-swal-popup {
   width: 60%; 
+  max-width: 500px;
 }
 

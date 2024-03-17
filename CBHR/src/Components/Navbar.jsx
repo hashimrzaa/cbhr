@@ -29,6 +29,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import "sweetalert2/dist/sweetalert2.css";
 import "./index.css";
+import { useEffect } from "react";
+import axios from "axios";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -167,6 +169,20 @@ export default function Navbar() {
   } else {
     Items = ["Add Course", "All Students", "All Courses"];
   }
+  const [userData, setuserData] = useState({});
+  const id = localStorage.getItem("userId");
+  useEffect(() => {
+    async function getUser() {
+      await axios(import.meta.env.VITE_API + "users/" + id)
+        .then((res) => {
+          setuserData(res.data?.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+    getUser();
+  }, []);
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -237,7 +253,11 @@ export default function Navbar() {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="" src="" />
+                  <Avatar
+                    alt={userData.userName}
+                    src={userData.image ? userData.image : userData.userName}
+                    sx={{bgcolor:'lightgray'}}
+                  />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -365,7 +385,7 @@ export default function Navbar() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3,overflow:'auto' }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, overflow: "auto" }}>
         <DrawerHeader />
         <Outlet />
       </Box>

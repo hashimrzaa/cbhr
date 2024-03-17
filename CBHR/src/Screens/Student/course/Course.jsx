@@ -155,8 +155,8 @@ const Course = () => {
                       }}
                     >
                       <Avatar
-                        src={item.name}
-                        alt={item.name}
+                         src={item.image ? item.image : item.name}
+                         alt={item.name}
                         sx={{ width: "55px", height: "55px" }}
                       />
                       <div
