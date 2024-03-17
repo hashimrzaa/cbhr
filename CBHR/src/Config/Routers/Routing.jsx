@@ -13,6 +13,8 @@ import AllCourses from "../../Screens/Admin/allCourses/AllCourses";
 import AllStudent from "../../Screens/Admin/allStudents/AllStudent";
 import SingleCourse from "../../Screens/Admin/allCourses/SingleCourse";
 import SingleStudent from "../../Screens/Admin/allStudents/SingleStudent";
+import Profile from "../../Screens/profile/Profile";
+import Edit from "../../Screens/profile/Edit";
 
 const Routing = () => {
   return (
@@ -21,6 +23,8 @@ const Routing = () => {
         <Route path="/" element={<ProtectedRoutes component={<Student />} />}>
           <Route path="" element={<HR />} />
           <Route path="course" element={<Course />} />
+          <Route path="user/profile" element={<Profile />} />
+          <Route path="user/profile/edit/:id" element={<Edit />} />
         </Route>
         <Route path="admin" element={<ProtectedRoutes component={<Admin />} />}>
           <Route path="" element={<AddCourse />} />

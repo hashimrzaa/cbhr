@@ -81,8 +81,9 @@ const AddCourse = () => {
         style={{
           textAlign: "center",
           fontSize: "40px",
-          fontWeight: "bold",
-          color: "gray",
+          fontWeight: "500",
+          color: "#1976d2",
+          opacity:'0.8',
           paddingTop: 30,
           padding:10,
           paddingBottom: 0,

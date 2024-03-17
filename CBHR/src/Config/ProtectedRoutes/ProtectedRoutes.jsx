@@ -20,13 +20,13 @@ const ProtectedRoutes = ({ component }) => {
   }, [token, navigate]);
 
   useEffect(() => {
-    if (location.pathname === "/admin") {
+    if (location.pathname.includes("admin")) {
       if (isUser && type === "student") {
         navigate("/");
       }
     }
 
-    if (location.pathname === "/") {
+    if (location.pathname === "/" || location.pathname == "/course" ) {
       if (isUser && type === "admin") {
         navigate("/admin");
       }

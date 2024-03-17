@@ -98,7 +98,7 @@ const Drawer = styled(MuiDrawer, {
     "& .MuiDrawer-paper": closedMixin(theme),
   }),
 }));
-const settings = ["Profile", "Logout"];
+let settings = [];
 export default function Navbar() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -166,8 +166,10 @@ export default function Navbar() {
   const type = localStorage.getItem("type");
   if (type == "student") {
     Items = ["HR", "Course"];
+    settings = ["Profile", "Logout"];
   } else {
     Items = ["Add Course", "All Students", "All Courses"];
+    settings = ["Logout"];
   }
   const [userData, setuserData] = useState({});
   const id = localStorage.getItem("userId");
@@ -256,7 +258,7 @@ export default function Navbar() {
                   <Avatar
                     alt={userData.userName}
                     src={userData.image ? userData.image : userData.userName}
-                    sx={{bgcolor:'lightgray'}}
+                    sx={{ bgcolor: "lightgray" }}
                   />
                 </IconButton>
               </Tooltip>
@@ -283,6 +285,8 @@ export default function Navbar() {
                       handleCloseUserMenu();
                       if (setting == "Logout") {
                         Logout();
+                      } else if (setting == "Profile") {
+                        navigate("user/profile");
                       }
                     }}
                   >
@@ -334,7 +338,6 @@ export default function Navbar() {
                     break;
                   case "All Students":
                     navigate("allstudents");
-
                     break;
                   case "Add Course":
                     navigate("");

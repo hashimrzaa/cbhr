@@ -12,6 +12,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../../Components/Loader";
+import Swal from "sweetalert2";
 
 const SingleCourse = () => {
   const { id } = useParams();
@@ -39,16 +40,18 @@ const SingleCourse = () => {
             );
             setdata(resc.data?.data);
           })
-          .catch((e) => {
+          .catch(async (e) => {
             setloader2(false);
             setloader(false);
-            console.log(e);
+            await Swal.fire({
+              icon: "error",
+              title: e.message,
+            });
           });
       } catch (error) {
         setloader2(false);
         setloader(false);
-        console.log(error);
-        Swal.fire({
+        await Swal.fire({
           icon: "error",
           title: error.message,
         });
@@ -112,7 +115,9 @@ const SingleCourse = () => {
               </div>
             ) : loader2 ? (
               <Loader color={"black"} />
-            ) : null}
+            ) : (
+              <div style={{ fontSize: "25px" }}>404 Not Found</div>
+            )}
           </div>
         </Box>
         <Divider />

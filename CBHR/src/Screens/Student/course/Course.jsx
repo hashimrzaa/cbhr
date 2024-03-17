@@ -58,7 +58,6 @@ const Course = () => {
           );
         })
         .catch(async (e) => {
-          console.log(e);
           setloader(false);
           setloader2(false);
           await Swal.fire({
