@@ -62,13 +62,13 @@ const SingleCourse = () => {
   return (
     <>
       <Card sx={{ position: "relative", overflow: "auto" }}>
-          <Button
-            sx={{ position: "absolute", top: 5, left: -6 }}
-            onClick={() => navigate("/admin/allcourses")}
-          >
-            <ArrowBack />
-          </Button>
-        <Box> 
+        <Button
+          sx={{ position: "absolute", top: 5, left: -6 }}
+          onClick={() => navigate("/admin/allcourses")}
+        >
+          <ArrowBack />
+        </Button>
+        <Box>
           <div
             style={{
               display: "flex",
@@ -78,6 +78,7 @@ const SingleCourse = () => {
               justifyContent: "center",
               gap: 50,
               flexWrap: "wrap",
+              overflow:'auto'
             }}
           >
             <SchoolRounded sx={{ fontSize: 150 }} />
@@ -116,17 +117,18 @@ const SingleCourse = () => {
         </Box>
         <Divider />
         <Box
-          key={"amksek"}
+         
           sx={{
             display: "flex",
             justifyContent: "center",
             flexDirection: "column",
+            overflow:'auto'
           }}
         >
           {students.length > 0 ? (
             students.map((item, index) => {
               return (
-                <>
+                <div key={index}>
                   <Box
                     key={item._id}
                     sx={{
@@ -134,6 +136,7 @@ const SingleCourse = () => {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
+                      justifyContent: size ? "center" : "",
                     }}
                   >
                     <div
@@ -142,6 +145,8 @@ const SingleCourse = () => {
                         alignItems: "center",
                         gap: "15px",
                         cursor: "pointer",
+                      flexDirection: size ? "column" : "row",
+
                       }}
                     >
                       <Avatar
@@ -176,7 +181,7 @@ const SingleCourse = () => {
                     </div>
                   </Box>
                   <Divider />
-                </>
+                </div>
               );
             })
           ) : loader ? (

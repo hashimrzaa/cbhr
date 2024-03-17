@@ -1,4 +1,11 @@
-import { Avatar, Box, Button, Card, Divider, useMediaQuery } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  Divider,
+  useMediaQuery,
+} from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
@@ -23,6 +30,10 @@ const AllStudent = () => {
       } catch (error) {
         console.error("Error fetching students:", error);
         setLoader(false);
+        Swal.fire({
+          icon:'error',
+          title:error.message
+        })
       } finally {
         setLoader(false);
       }
@@ -74,23 +85,25 @@ const AllStudent = () => {
       });
     }
   }
-  const size = useMediaQuery('(max-width:600px)')
+  const size = useMediaQuery("(max-width:500px)");
   return (
     <div>
-      <Card sx={{overflow:'auto'}}>
+      <Card sx={{ overflow: "auto" }}>
         <div
           style={{
             padding: "1.5rem",
-            fontSize: "35px",
+            fontSize: size ? "25px" : "35px",
             fontWeight: "500",
-            color: "white",
-            textAlign:'center',
-            background:'#1976d2',
-            letterSpacing:'1.5px'
+            color: size ? "#1976d2" : "WHITE",
+            textAlign: "center",
+            background: size ? "" : "#1976d2",
+            letterSpacing: "1.5px",
+            overflow:'auto'
           }}
         >
           ALL STUDENTS
         </div>
+        <Divider />
         <Box
           sx={{
             display: "flex",
@@ -101,59 +114,85 @@ const AllStudent = () => {
           {data.length > 0 ? (
             data.map((item, index) => {
               return (
-                <>
-                <Box
-                  key={index}
-                  sx={{
-                    p: 3,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div
-                    style={{
+                <div key={index}>
+                  <Box
+                    sx={{
+                      p: 3,
                       display: "flex",
                       alignItems: "center",
-                      gap: "15px",
-                      cursor: "pointer",
+                      justifyContent: "space-between",
+                      flexDirection: !size ? "row" : "column",
                     }}
                   >
-                    <Avatar src={item.name} alt={item.name} sx={{width:'55px',height:'55px'}}/>
                     <div
-                      style={{ color: "#1976d2" , fontSize:'20px',fontWeight:'500' }}
-                      onClick={() => {
-                        navigate(item._id);
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "15px",
+                        cursor: "pointer",
+                        flexDirection: !size ? "row" : "column",
                       }}
                     >
-                      {item.name}{!size? <span style={{fontWeight:'350',fontSize:'18px'}}> From <b style={{color:'gray',fontSize:'16px',fontWeight:'500'}}>{item.address?.toUpperCase()}</b></span>:null}
+                      <Avatar
+                        src={item.name}
+                        alt={item.name}
+                        sx={{ width: "55px", height: "55px" }}
+                      />
+                      <div
+                        style={{
+                          color: "#1976d2",
+                          fontSize: "20px",
+                          fontWeight: "500",
+                        }}
+                        onClick={() => {
+                          navigate(item._id);
+                        }}
+                      >
+                        {item.name}
+                        {!size ? (
+                          <span style={{ fontWeight: "350", fontSize: "18px" }}>
+                            {" "}
+                            From{" "}
+                            <b
+                              style={{
+                                color: "gray",
+                                fontSize: "16px",
+                                fontWeight: "500",
+                              }}
+                            >
+                              {item.address?.toUpperCase()}
+                            </b>
+                          </span>
+                        ) : null}
+                      </div>
                     </div>
-                  </div>
-                  <Button
-                    onClick={() => {
-                      setindex(index);
-                      deleteStudent(item._id, item.name);
-                    }}
-                  >
-                    {loader2 && indexx == index ? (
-                      <Loader size={20} />
-                    ) : (
-                      <Delete />
-                    )}
-                  </Button>
-                </Box>
-                <Divider/>
-                </>
+                    <Button
+                      onClick={() => {
+                        setindex(index);
+                        deleteStudent(item._id, item.name);
+                      }}
+                    >
+                      {loader2 && indexx == index ? (
+                        <Loader size={20} />
+                      ) : (
+                        <Delete />
+                      )}
+                    </Button>
+                  </Box>
+                  <Divider />
+                </div>
               );
             })
           ) : loader ? (
             <div style={{ padding: 30 }}>
-            <Loader size={50} />
-          </div>
+              <Loader size={50} />
+            </div>
           ) : (
             <div
               style={{
                 fontSize: "20px",
+                padding: 30 ,
+                textAlign:'center'
               }}
             >
               No Students Are Available Now

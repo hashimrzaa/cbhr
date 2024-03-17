@@ -73,18 +73,19 @@ const AddCourse = () => {
       formik.resetForm();
     },
   });
-  const size = useMediaQuery("(max-width:600px)");
+  const size = useMediaQuery("(max-width:650px)");
 
   return (
-    <Card sx={{  m: "auto", maxWidth: "700px", mt: 5 }}>
+    <Card sx={{ m: "auto", maxWidth: "700px", mt: 5 }}>
       <div
         style={{
           textAlign: "center",
           fontSize: "40px",
           fontWeight: "bold",
           color: "gray",
-          padding: 30,
-          paddingBottom:0
+          paddingTop: 30,
+          padding:10,
+          paddingBottom: 0,
         }}
       >
         ADD COURSE
@@ -96,12 +97,11 @@ const AddCourse = () => {
           formik.handleSubmit();
         }}
         noValidate
-        sx={{p: 3, mt: 4 ,pt:0}}
+        sx={{ p: 3, mt: 4, pt: 0 }}
       >
-        <Grid container spacing={2}>
+        <Grid container spacing={5}>
           <Grid item xs={size ? 12 : 6}>
             <TextField
-              margin="dense"
               required
               value={formik.values.sirName}
               fullWidth
@@ -130,7 +130,6 @@ const AddCourse = () => {
               renderInput={(params) => (
                 <TextField
                   fullWidth
-                  margin="dense"
                   error={formik.touched.days && Boolean(formik.errors.days)}
                   helperText={formik.touched.days && formik.errors.days}
                   {...params}
@@ -141,7 +140,6 @@ const AddCourse = () => {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              margin="dense"
               required
               fullWidth
               value={formik.values.courseName}
@@ -150,7 +148,6 @@ const AddCourse = () => {
               name="courseName"
               type="courseName"
               autoComplete="courseName"
-              autoFocus
               onChange={formik.handleChange}
               error={
                 formik.touched.courseName && Boolean(formik.errors.courseName)

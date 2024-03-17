@@ -11,13 +11,14 @@ import {
   Divider,
   useMediaQuery,
 } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Loader from "../../../Components/Loader";
 import Swal from "sweetalert2";
 
 const Course = () => {
   const [students, setStudentData] = useState([]);
   const [data, setCourseData] = useState({});
+  const [name, setname] = useState("");
   const Uid = localStorage.getItem("userId");
   useEffect(() => {
     async function getData() {
@@ -26,6 +27,7 @@ const Course = () => {
       await axios(import.meta.env.VITE_API + "users/" + Uid)
         .then(async (res) => {
           const name = res.data?.data?.userName;
+          setname(name);
           await axios(import.meta.env.VITE_API + "students").then(
             async (res) => {
               const find = res.data?.data?.find((item) => item.name == name);
@@ -74,7 +76,6 @@ const Course = () => {
   return (
     <div>
       <Card sx={{ position: "relative", overflow: "auto" }}>
-    
         <Box>
           <div
             style={{
@@ -85,6 +86,7 @@ const Course = () => {
               justifyContent: "center",
               gap: 50,
               flexWrap: "wrap",
+              overflow: "auto",
             }}
           >
             <SchoolRounded sx={{ fontSize: 150 }} />
@@ -123,24 +125,24 @@ const Course = () => {
         </Box>
         <Divider />
         <Box
-          key={"amksek"}
           sx={{
             display: "flex",
             justifyContent: "center",
             flexDirection: "column",
+            overflow: "auto",
           }}
         >
           {students.length > 0 ? (
             students.map((item, index) => {
               return (
-                <>
+                <div key={index}>
                   <Box
-                    key={index}
                     sx={{
                       p: 3,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
+                      justifyContent: size ? "center" : "",
                     }}
                   >
                     <div
@@ -149,6 +151,7 @@ const Course = () => {
                         alignItems: "center",
                         gap: "15px",
                         cursor: "pointer",
+                        flexDirection: size ? "column" : "row",
                       }}
                     >
                       <Avatar
@@ -167,7 +170,7 @@ const Course = () => {
                         {!size ? (
                           <span style={{ fontWeight: "350", fontSize: "18px" }}>
                             {" "}
-                            From{" "}
+                            {item.name == name ? "" : "From"}{" "}
                             <b
                               style={{
                                 color: "gray",
@@ -175,15 +178,20 @@ const Course = () => {
                                 fontWeight: "500",
                               }}
                             >
-                              {item.address?.toUpperCase()}
+                              {item.name == name
+                                ? "You"
+                                : item.address?.toUpperCase()}
                             </b>
                           </span>
+                        ) : item.name == name ? (
+                          <div style={{color:'gray',textAlign:'center'}}>You</div>
+                         
                         ) : null}
                       </div>
                     </div>
                   </Box>
                   <Divider />
-                </>
+                </div>
               );
             })
           ) : loader ? (
