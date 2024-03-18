@@ -5,9 +5,12 @@ import { useState } from "react";
 
 const App = () => {
   const [isImageChange, setisImageChange] = useState(false);
+  const [isUser, setisUser] = useState(false);
   return (
     <>
-      <UserContextProvider value={{ isImageChange, setisImageChange }}>
+      <UserContextProvider
+        value={{ isImageChange, setisImageChange, setisUser, isUser }}
+      >
         <Routers />
       </UserContextProvider>
     </>
