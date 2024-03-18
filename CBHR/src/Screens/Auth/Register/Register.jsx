@@ -212,7 +212,6 @@ export default function SignIn() {
   };
   let [LoaderIMG, setLoaderIMG] = React.useState(false);
   let [imgurl, setimgurl] = React.useState("");
-  console.log(imgurl);
   return (
     <Box>
       <Container component="main" sx={{ maxWidth: "600px" }} maxWidth={false}>
