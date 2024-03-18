@@ -1,5 +1,13 @@
 import { ArrowBack } from "@mui/icons-material";
-import { Avatar, Box, Button, Card, TextField, styled, useMediaQuery } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  TextField,
+  styled,
+  useMediaQuery,
+} from "@mui/material";
 import React, { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../Components/Loader";
@@ -68,42 +76,49 @@ const Edit = () => {
   async function EditU() {
     try {
       if (imgurl) {
-        setloader(true);
-        await axios
-          .put(import.meta.env.VITE_API + "users/edit/" + Uid, {
-            image: imgurl,
-          })
-          .then(async (res) => {
-            await axios
-              .put(import.meta.env.VITE_API + "students/" + id, {
-                image: imgurl,
-              })
-              .then(async (res) => {
-                setloader(false);
-                await Swal.fire({
-                  icon: "success",
-                  title: "User Edited Successfully",
-                });
-                newPass.length >= 6 || oldPass
-                  ? null
-                  : navigate("/user/profile");
-              })
-              .catch(async (e) => {
-                setloader(false);
+        if (newPass || oldPass) {
+          //   if (requiredEror && requiredEror2 && sixEror) {
+          //     setloader(true);
+          //   }
+        } else {
+          setloader(true);
 
-                await Swal.fire({
-                  icon: "error",
-                  title: e?.message,
+          await axios
+            .put(import.meta.env.VITE_API + "users/edit/" + Uid, {
+              image: imgurl,
+            })
+            .then(async (res) => {
+              await axios
+                .put(import.meta.env.VITE_API + "students/" + id, {
+                  image: imgurl,
+                })
+                .then(async (res) => {
+                  setloader(false);
+                  await Swal.fire({
+                    icon: "success",
+                    title: "Image edit successfully",
+                  });
+                  newPass.length >= 6 || oldPass
+                    ? null
+                    : navigate("/user/profile");
+                })
+                .catch(async (e) => {
+                  setloader(false);
+
+                  await Swal.fire({
+                    icon: "error",
+                    title: e?.message,
+                  });
                 });
+            })
+            .catch(async (e) => {
+              setloader(false);
+              await Swal.fire({
+                icon: "error",
+                title: e?.message,
               });
-          })
-          .catch(async (e) => {
-            setloader(false);
-            await Swal.fire({
-              icon: "error",
-              title: e?.message,
             });
-          });
+        }
       }
 
       if (newPass.length >= 6 && oldPass) {
@@ -117,12 +132,47 @@ const Edit = () => {
             newPassword: newPass,
           })
           .then(async (res) => {
-            setloader(false);
+            if (imgurl) {
+              await axios
+                .put(import.meta.env.VITE_API + "users/edit/" + Uid, {
+                  image: imgurl,
+                })
+                .then(async (res) => {
+                  await axios
+                    .put(import.meta.env.VITE_API + "students/" + id, {
+                      image: imgurl,
+                    })
+                    .then(async (res) => {
+                      setloader(false);
+                      await Swal.fire({
+                        icon: "success",
+                        title: "Image edit successfully",
+                      });
+
+                      navigate("/user/profile");
+                    })
+                    .catch(async (e) => {
+                      setloader(false);
+
+                      await Swal.fire({
+                        icon: "error",
+                        title: e?.message,
+                      });
+                    });
+                })
+                .catch(async (e) => {
+                  setloader(false);
+                  await Swal.fire({
+                    icon: "error",
+                    title: e?.message,
+                  });
+                });
+            }
+            setloader(false)
             await Swal.fire({
               icon: "success",
               title: res.data?.message,
             });
-            navigate("/user/profile");
           })
           .catch(async (e) => {
             setloader(false);
@@ -132,7 +182,7 @@ const Edit = () => {
             });
           });
       } else {
-        if (newPass.length < 6) {
+        if (newPass.length < 6 && newPass) {
           setsixEror(true);
         } else {
           setsixEror(false);
@@ -156,7 +206,7 @@ const Edit = () => {
       });
     }
   }
-const size = useMediaQuery('(max-width:500px)')
+  const size = useMediaQuery("(max-width:500px)");
   return (
     <Card
       sx={{
@@ -291,7 +341,7 @@ const size = useMediaQuery('(max-width:500px)')
       >
         <Button
           variant="contained"
-          fullWidth={size?true:false}
+          fullWidth={size ? true : false}
           onClick={() => {
             EditU();
           }}
@@ -299,8 +349,7 @@ const size = useMediaQuery('(max-width:500px)')
           save Changes{loader ? <Loader color={"white"} size={20} /> : null}
         </Button>
         <Button
-          fullWidth={size?true:false}
-
+          fullWidth={size ? true : false}
           variant="contained"
           onClick={() => {
             navigate("/user/profile");
