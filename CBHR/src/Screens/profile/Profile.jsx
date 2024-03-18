@@ -97,10 +97,22 @@ function SingleStudent() {
           >
             <ArrowBack />
           </Button>
-          <div style={{ fontWeight: "600", marginBottom: "15px" }}>
-            Your Profile{" "}
+          <div
+            style={{
+              fontWeight: "600",
+              // marginBottom: "30px",
+              padding: "20px",
+              // background: "#1976d2",
+              color: "black",
+              width: "100%",
+              borderRadius: "10px",
+              opacity: "0.7",
+              fontSize:'20px'
+              // marginTop:'px'
+            }}
+          >
+            Your Profile
           </div>
-
           <Avatar
             sx={{
               width: 100,
@@ -111,8 +123,10 @@ function SingleStudent() {
               border: `${theme.palette.alpha?.white[100]} solid 3px`,
               fontSize: "40px",
             }}
-            src={UserData.image ? UserData.image : UserData.userName}
-            alt={UserData.userName}
+            src={
+              UserData.image ? UserData.image : UserData.userName?.toUpperCase()
+            }
+            alt={UserData.userName?.toUpperCase()}
           />
           <div
             style={{ fontSize: "16px", marginBottom: "4px", fontWeight: "500" }}
@@ -120,27 +134,27 @@ function SingleStudent() {
             {UserData.userName?.toUpperCase()}
           </div>
           <Button
-            sx={{ mb: 1 }}
+            sx={{ mb: 3}}
             onClick={() => {
               navigate(`edit/${StudentData._id}`);
             }}
           >
             <LabelWrapper
               sx={{
-                background: "#1976d2",
+                background: "orange",
                 color: "white",
                 borderRadius: "5px",
                 cursor: "pointer",
+                
               }}
             >
               Edit Profile
             </LabelWrapper>
           </Button>
 
-          <Divider sx={{ width: "100%" }} />
-          <div
-            style={{ width: "90%", marginTop: "40px", marginBottom: "40px" }}
-          >
+     
+
+          <div style={{ width: "90%", marginBottom: "40px" }}>
             <Grid spacing={2} container>
               <Grid
                 item
@@ -204,11 +218,20 @@ function SingleStudent() {
               </Grid>
             </Grid>
           </div>
-          <Divider sx={{ width: "100%" }} />
+
           <div
-            style={{ fontWeight: "800", marginTop: "15px", fontSize: "20px" }}
+            style={{
+              fontWeight: "600",
+              marginBottom: "25px",
+              padding: "20px",
+              background: "#1976d2",
+              color: "white",
+              width: "100%",
+              borderRadius: "5px ",
+              opacity: "0.8",
+            }}
           >
-            ABOUT{" "}
+            ABOUT
           </div>
 
           <Typography
@@ -216,7 +239,7 @@ function SingleStudent() {
             sx={{
               fontSize: theme.typography.pxToRem(16),
               pt: 3,
-              color: theme.palette.alpha?.trueWhite[70],
+              color: "gray",
             }}
           >
             {StudentData.name} Register in {StudentData.courseName} Course in HR
@@ -227,7 +250,7 @@ function SingleStudent() {
             sx={{
               fontSize: theme.typography.pxToRem(16),
               pb: 3,
-              color: theme.palette.alpha?.trueWhite[70],
+              color: "gray",
             }}
           >
             Hashim Raza management system (HR) is a software application

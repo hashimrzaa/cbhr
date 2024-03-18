@@ -26,7 +26,12 @@ const ProtectedRoutes = ({ component }) => {
       }
     }
 
-    if (location.pathname === "/" || location.pathname == "/course" ) {
+    if (
+      location.pathname === "/" ||
+      location.pathname == "/course" ||
+      location.pathname == "/user/profile" ||
+      location.pathname.includes("/user/profile/edit")
+    ) {
       if (isUser && type === "admin") {
         navigate("/admin");
       }

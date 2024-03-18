@@ -153,8 +153,8 @@ const SingleCourse = () => {
                       }}
                     >
                       <Avatar
-                        src={item.image ? item.image : item.name}
-                        alt={item.name}
+                        src={item.image ? item.image : item.name?.toUpperCase()}
+                        alt={item.name?.toUpperCase()}
                         sx={{ width: "55px", height: "55px" }}
                       />
                       <div

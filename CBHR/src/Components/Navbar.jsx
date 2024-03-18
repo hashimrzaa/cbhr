@@ -256,8 +256,12 @@ export default function Navbar() {
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
-                    alt={userData.userName}
-                    src={userData.image ? userData.image : userData.userName}
+                    alt={userData.userName?.toUpperCase()}
+                    src={
+                      userData.image
+                        ? userData.image
+                        : userData.userName?.toUpperCase()
+                    }
                     sx={{ bgcolor: "lightgray" }}
                   />
                 </IconButton>

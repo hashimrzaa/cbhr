@@ -168,11 +168,14 @@ const Edit = () => {
                   });
                 });
             }
-            setloader(false)
+            setloader(false);
             await Swal.fire({
               icon: "success",
               title: res.data?.message,
             });
+            if (!imgurl) {
+              navigate("/user/profile");
+            }
           })
           .catch(async (e) => {
             setloader(false);

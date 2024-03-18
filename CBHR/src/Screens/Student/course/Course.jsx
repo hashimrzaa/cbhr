@@ -154,8 +154,8 @@ const Course = () => {
                       }}
                     >
                       <Avatar
-                         src={item.image ? item.image : item.name}
-                         alt={item.name}
+                         src={item.image ? item.image : item.name?.toUpperCase()}
+                         alt={item.name?.toUpperCase()}
                         sx={{ width: "55px", height: "55px" }}
                       />
                       <div
@@ -169,11 +169,11 @@ const Course = () => {
                         {!size ? (
                           <span style={{ fontWeight: "350", fontSize: "18px" }}>
                             {" "}
-                            {item.name == name ? "" : "From"}{" "}
+                            {item.name == name ? "" :  <span style={{fontSize:'14px',fontWeight:'400'}}>From</span>}{" "}
                             <b
                               style={{
                                 color: "gray",
-                                fontSize: "16px",
+                                fontSize: "15px",
                                 fontWeight: "500",
                               }}
                             >
