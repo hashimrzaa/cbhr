@@ -1,7 +1,11 @@
 {
   "hosting": {
-    "site": "hrsystem",
+    "site": "hrorganization",
     "public": "dist",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
   }
 }

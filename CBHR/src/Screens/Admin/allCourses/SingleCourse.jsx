@@ -139,7 +139,6 @@ const SingleCourse = () => {
                       p: 3,
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "space-between",
                       justifyContent: size ? "center" : "",
                     }}
                   >
