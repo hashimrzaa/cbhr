@@ -189,7 +189,7 @@ export default function Navbar() {
         setisImageChange(false)
     }
     getUser();
-  }, [isImageChange,type]);
+  }, [isImageChange,type,navigate ]);
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
