@@ -121,7 +121,7 @@ const AddCourse = () => {
             <Autocomplete
               disablePortal
               name="days"
-              label="Day"
+              label="Days"
               type="text"
               id="days"
               options={["MWF", "TTS"]}
@@ -134,7 +134,7 @@ const AddCourse = () => {
                   error={formik.touched.days && Boolean(formik.errors.days)}
                   helperText={formik.touched.days && formik.errors.days}
                   {...params}
-                  label="Course"
+                  label="Days"
                 />
               )}
             />
