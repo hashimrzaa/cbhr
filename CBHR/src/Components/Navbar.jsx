@@ -31,6 +31,7 @@ import "sweetalert2/dist/sweetalert2.css";
 import "./index.css";
 import { useEffect } from "react";
 import axios from "axios";
+import UserContexta from "../context/userContextProvider";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -100,6 +101,8 @@ const Drawer = styled(MuiDrawer, {
 }));
 let settings = [];
 export default function Navbar() {
+  const { setisImageChange, isImageChange } = UserContexta();
+
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -178,13 +181,15 @@ export default function Navbar() {
       await axios(import.meta.env.VITE_API + "users/" + id)
         .then((res) => {
           setuserData(res.data?.data);
+          setisImageChange(false)
         })
         .catch((e) => {
           console.log(e);
         });
+        setisImageChange(false)
     }
     getUser();
-  }, []);
+  }, [isImageChange,type]);
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />

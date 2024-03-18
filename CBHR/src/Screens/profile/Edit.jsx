@@ -18,6 +18,7 @@ import { storage } from "../../Config/FirebaseStorage/FirebaseStorage";
 import { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import UserContexta from "../../context/userContextProvider";
 const Edit = () => {
   const VisuallyHiddenInput = styled("input")({
     opacity: "0",
@@ -34,6 +35,8 @@ const Edit = () => {
   const [loader, setloader] = React.useState(false);
 
   const [imgurl, setimgurl] = React.useState("");
+
+  const { setisImageChange ,isImageChange} = UserContexta();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -94,6 +97,7 @@ const Edit = () => {
                 })
                 .then(async (res) => {
                   setloader(false);
+                  setisImageChange(true)
                   await Swal.fire({
                     icon: "success",
                     title: "Image edit successfully",
@@ -144,6 +148,7 @@ const Edit = () => {
                     })
                     .then(async (res) => {
                       setloader(false);
+                      setisImageChange(true)
                       await Swal.fire({
                         icon: "success",
                         title: "Image edit successfully",

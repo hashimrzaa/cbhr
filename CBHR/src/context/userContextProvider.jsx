@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 const UserContext = createContext({
-  isUser: false,
-  setIsUser: () => {},
+  isImageChange: false,
+  setisImageChange: () => {},
 });
 
 const UserContextProvider = UserContext.Provider;

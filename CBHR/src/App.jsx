@@ -4,10 +4,10 @@ import { UserContextProvider } from "./context/userContextProvider";
 import { useState } from "react";
 
 const App = () => {
-  const [isUser, setIsUser] = useState(false);
+  const [isImageChange, setisImageChange] = useState(false);
   return (
     <>
-      <UserContextProvider value={{ isUser, setIsUser }}>
+      <UserContextProvider value={{ isImageChange, setisImageChange }}>
         <Routers />
       </UserContextProvider>
     </>
